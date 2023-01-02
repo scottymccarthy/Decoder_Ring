@@ -5,9 +5,63 @@
 
 const polybiusModule = (function () {
   // you can add any code you want within this function scope
+  const cipher = {a:11,b:21,c:31,d:41,e:51,f:12,
+    g:22,h:32,i:42,j:42,k:52,l:13,m:23,n:33,o:43,
+    p:53,q:14,r:24,s:34,t:44,u:54,v:15,w:25,x:35,y:45,z:55,};
 
-  function polybius(input, encode = true) {
-    // your solution code here
+  const decipher = 
+ {11: "a",21: "b",31: "c",41: "d",51: "e",12: "f",22: "g",
+ 32: "h",42: "(i/j)",52: "k",13: "l",23: "m",33: "n",
+ 43: "o",53: "p",14: "q",24: "r",34: "s",44: "t",54: "u",
+ 15: "v",25: "w",35: "x",45: "y",55: "z",};
+  
+ function polybius(input, encode = true) {
+    //Capital letters can be ignored
+    input = input.toLowerCase();
+//When encoding, your output should still be a string
+    let encodedInput = "";
+    if (encode == true) {
+    for(let i = 0; i < input.length; i++){
+//Spaces should be maintained throughout.
+        if(input[i] == " "){
+            encodedInput += " ";
+          } else {
+            encodedInput += cipher[input[i]];
+          }
+    }
+      return encodedInput;
+    }
+    
+    else {
+/*When decoding, the number of characters in the string excluding spaces should be even. Otherwise, return false.*/
+      let decodedInput = "";
+      let doubleSpaced = "";
+      for(let i = 0; i < input.length; i++) {
+        if (input[i]!= " ") {
+          doubleSpaced += input[i]
+          } 
+        else {
+            doubleSpaced += "  ";
+          }
+      }
+      
+      if(doubleSpaced.length % 2 != 0) {
+        return false;
+      }
+      
+      for(let i = 0; i < doubleSpaced.length; i += 2){          if (doubleSpaced[i]!= " ") {
+            let code = "";
+            code += doubleSpaced[i];
+            code += doubleSpaced[i+1];
+             decodedInput += decipher[code];
+          }
+//Changes double spaces to single space
+          else {
+             decodedInput += " ";
+          }
+        }
+      return  decodedInput;  
+    }
   }
 
   return {
